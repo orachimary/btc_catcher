@@ -7,6 +7,6 @@ sudo docker-compose build
 sudo docker-compose run web python manage.py migrate
 sudo docker-compose up -d
 ```
-URL API
-GET /api/ - Get last records
+URL API<br/>
+GET /api/ - Get last records<br/>
 POST /api/update_btc - Manual update BTC info

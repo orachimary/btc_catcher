@@ -1,0 +1,6 @@
+.env
+.pytest_cache
+.idea
+__pycache__
+.pip_cache
+db.sqlite3

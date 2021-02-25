@@ -1,0 +1,48 @@
+version: "3.3"
+
+services:
+  web:
+    build: .
+    working_dir: /usr/app/src
+    command: python manage.py runserver 0.0.0.0:8000
+    env_file: .env
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8000:8000"
+
+  worker:
+    build: .
+    working_dir: /usr/app/src
+    command: celery -A btc_catcher worker -B --loglevel=INFO
+    env_file: .env
+    depends_on:
+      - postgres
+      - redis
+      - web
+
+  postgres:
+    image: postgres:12
+    hostname: postgres
+    environment:
+      POSTGRES_DB: btc
+      POSTGRES_USER: btc
+      POSTGRES_PASSWORD: btc
+    ports:
+      - 5432:5432
+    volumes:
+      - pg_data:/var/lib/postgresql/
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    hostname: redis
+    ports:
+      - "6379:6379"
+
+
+# Volumes
+volumes:
+    pg_data:
+      external: true
